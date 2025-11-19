@@ -24,14 +24,18 @@ public class HelloServlet extends HttpServlet {
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
+        // ServletContext servletContext = getServletContext();
+        String path = "/home/bonnyped/projects_to_do/currency-exchange/src/main/resources/new.db";
+        // servletContext.getRealPath("webapps/currency-exchange-1.0-SNAPSHOT/WEB-INF/classes/new.db");
 
-        try (Connection connection = DriverManager.getConnection("jdbc:sqlite:new.db")) {
+        try (Connection connection = DriverManager.getConnection("jdbc:sqlite:" + path)) {
             Statement statement = connection.createStatement();
             String query = "SELECT * FROM currencies";
             ResultSet resultSet = statement.executeQuery(query);
             while (resultSet.next()) {
-                System.out.println(resultSet.getInt(1) + " " + resultSet.getInt(2) + " " + resultSet.getInt(3) + " "
-                        + resultSet.getInt(4));
+                System.out
+                        .println(resultSet.getInt(1) + " " + resultSet.getString(2) + " " + resultSet.getString(3) + " "
+                                + resultSet.getString(4));
             }
         } catch (SQLException e) {
             log("Error with connection to data base!");

@@ -19,10 +19,16 @@ public class HelloServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setContentType("text/html");
         resp.setCharacterEncoding("UTF-8");
+        try {
+            Class.forName("org.sqlite.JDBC");
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
 
-        try (Connection connection = DriverManager.getConnection("jdbc:sqlite:src/main/resources/new.db");
-                Statement statement = connection.createStatement();
-                ResultSet resultSet = statement.executeQuery("SELECT * FROM currencies")) {
+        try (Connection connection = DriverManager.getConnection("jdbc:sqlite:new.db")) {
+            Statement statement = connection.createStatement();
+            String query = "SELECT * FROM currencies";
+            ResultSet resultSet = statement.executeQuery(query);
             while (resultSet.next()) {
                 System.out.println(resultSet.getInt(1) + " " + resultSet.getInt(2) + " " + resultSet.getInt(3) + " "
                         + resultSet.getInt(4));
